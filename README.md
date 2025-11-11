@@ -269,9 +269,9 @@ This project demonstrates solutions to common backend challenges:
 
 This is a code sample from a larger private project. For questions or to discuss the architecture:
 
-- **GitHub**: [Your GitHub Profile]
-- **LinkedIn**: [Your LinkedIn]
-- **Email**: [Your Email]
+- **GitHub**: github.com/conquertec
+- **LinkedIn**: linkedin.com/in/losogelet
+- **Email**: ogeletlevy@gmail.com
 
 ---
 
