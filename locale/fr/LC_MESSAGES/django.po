@@ -1,0 +1,176 @@
+# French translations for ProGestock.
+# Copyright (C) 2025
+# This file is distributed under the same license as the ProGestock package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ProGestock 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-08 12:00+0000\n"
+"PO-Revision-Date: 2025-11-08 12:00+0000\n"
+"Last-Translator: ProGestock Team\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+# Generic Error Messages
+msgid "An unexpected error occurred. Please try again later."
+msgstr "Une erreur inattendue s'est produite. Veuillez réessayer plus tard."
+
+msgid "Validation failed. Please check your input."
+msgstr "La validation a échoué. Veuillez vérifier vos données."
+
+msgid "Authentication credentials were not provided or are invalid."
+msgstr "Les identifiants d'authentification n'ont pas été fournis ou sont invalides."
+
+msgid "You do not have permission to perform this action."
+msgstr "Vous n'avez pas la permission d'effectuer cette action."
+
+msgid "The requested resource was not found."
+msgstr "La ressource demandée n'a pas été trouvée."
+
+msgid "This HTTP method is not allowed for this endpoint."
+msgstr "Cette méthode HTTP n'est pas autorisée pour cet endpoint."
+
+msgid "Too many requests. Please slow down and try again later."
+msgstr "Trop de requêtes. Veuillez ralentir et réessayer plus tard."
+
+msgid "An error occurred"
+msgstr "Une erreur s'est produite"
+
+# Authentication Errors
+msgid "The email or password you entered is incorrect."
+msgstr "L'email ou le mot de passe que vous avez saisi est incorrect."
+
+msgid "Please verify your email address before logging in."
+msgstr "Veuillez vérifier votre adresse email avant de vous connecter."
+
+msgid "Your account has been disabled. Please contact support."
+msgstr "Votre compte a été désactivé. Veuillez contacter le support."
+
+msgid "This link has expired. Please request a new one."
+msgstr "Ce lien a expiré. Veuillez en demander un nouveau."
+
+msgid "This link is invalid or has already been used."
+msgstr "Ce lien est invalide ou a déjà été utilisé."
+
+msgid "The verification code is invalid or has expired."
+msgstr "Le code de vérification est invalide ou a expiré."
+
+msgid "This email address has already been verified."
+msgstr "Cette adresse email a déjà été vérifiée."
+
+msgid "Google authentication failed. Please try again."
+msgstr "L'authentification Google a échoué. Veuillez réessayer."
+
+# User & Team Management Errors
+msgid "A user is already registered with this email address."
+msgstr "Un utilisateur est déjà enregistré avec cette adresse email."
+
+msgid "User not found."
+msgstr "Utilisateur non trouvé."
+
+msgid "You cannot delete your own account."
+msgstr "Vous ne pouvez pas supprimer votre propre compte."
+
+msgid "You cannot change your own role."
+msgstr "Vous ne pouvez pas modifier votre propre rôle."
+
+msgid "Only administrators can perform this action."
+msgstr "Seuls les administrateurs peuvent effectuer cette action."
+
+msgid "Invitation not found or has expired."
+msgstr "Invitation non trouvée ou expirée."
+
+msgid "This invitation has already been accepted."
+msgstr "Cette invitation a déjà été acceptée."
+
+msgid "Password must be at least 8 characters long."
+msgstr "Le mot de passe doit contenir au moins 8 caractères."
+
+# Company & Settings Errors
+msgid "User is not associated with any company."
+msgstr "L'utilisateur n'est associé à aucune entreprise."
+
+msgid "Logo file size must not exceed 2MB."
+msgstr "La taille du fichier du logo ne doit pas dépasser 2 Mo."
+
+msgid "Sales tax rate must be between 0 and 100."
+msgstr "Le taux de taxe de vente doit être compris entre 0 et 100."
+
+msgid "Brand color must be a valid hexadecimal color code (e.g., #FF5733)."
+msgstr "La couleur de marque doit être un code couleur hexadécimal valide (ex: #FF5733)."
+
+# Inventory Errors
+msgid "Product not found."
+msgstr "Produit non trouvé."
+
+msgid "Cannot delete category. It is being used by {count} product(s)."
+msgstr "Impossible de supprimer la catégorie. Elle est utilisée par {count} produit(s)."
+
+msgid "Cannot delete location. It contains {count} product(s)."
+msgstr "Impossible de supprimer l'emplacement. Il contient {count} produit(s)."
+
+msgid "Insufficient stock available for this operation."
+msgstr "Stock insuffisant pour cette opération."
+
+msgid "Stock quantity must be a positive number."
+msgstr "La quantité en stock doit être un nombre positif."
+
+msgid "A product with this SKU already exists."
+msgstr "Un produit avec ce SKU existe déjà."
+
+# Sales Errors
+msgid "Quote not found."
+msgstr "Devis non trouvé."
+
+msgid "Invoice not found."
+msgstr "Facture non trouvée."
+
+msgid "Client not found."
+msgstr "Client non trouvé."
+
+msgid "Payment amount cannot exceed the outstanding balance."
+msgstr "Le montant du paiement ne peut pas dépasser le solde impayé."
+
+msgid "This quote has already been converted to an invoice."
+msgstr "Ce devis a déjà été converti en facture."
+
+msgid "This invoice has already been fully paid."
+msgstr "Cette facture a déjà été entièrement payée."
+
+# Purchasing Errors
+msgid "Purchase order not found."
+msgstr "Bon de commande non trouvé."
+
+msgid "Supplier not found."
+msgstr "Fournisseur non trouvé."
+
+msgid "This purchase order has already been received."
+msgstr "Ce bon de commande a déjà été reçu."
+
+# Validation Errors
+msgid "This field is required."
+msgstr "Ce champ est obligatoire."
+
+msgid "Please enter a valid email address."
+msgstr "Veuillez saisir une adresse email valide."
+
+msgid "Please enter a valid date."
+msgstr "Veuillez saisir une date valide."
+
+msgid "Please enter a valid number."
+msgstr "Veuillez saisir un nombre valide."
+
+msgid "This value is too long."
+msgstr "Cette valeur est trop longue."
+
+# System Errors
+msgid "Failed to send email. Please try again later."
+msgstr "Échec de l'envoi de l'email. Veuillez réessayer plus tard."
+
+msgid "A database error occurred. Please try again."
+msgstr "Une erreur de base de données s'est produite. Veuillez réessayer."

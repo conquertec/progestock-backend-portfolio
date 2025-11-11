@@ -1,0 +1,73 @@
+version: '3.8'
+
+# Docker Compose for Local Development
+# This file runs both frontend and backend for easy local development
+
+services:
+  # Backend Service (Django)
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: progestock-backend-dev
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount source code for hot reloading
+      - .:/app
+      # Don't overwrite these
+      - /app/__pycache__
+      - /app/*.egg-info
+    environment:
+      # Django settings
+      - SECRET_KEY=p^1^=!3@nx+s4^7s(y@lp8*hyes#%i@q79*b3q7y8=%e7-v6cc
+      - DEBUG=True
+      - DATABASE_URL=sqlite:///db.sqlite3
+
+      # Google OAuth
+      - GOOGLE_OAUTH_CLIENT_ID=5814920372-8dot8md5ro5oaet9d6jv1co6fbr7g4ru.apps.googleusercontent.com
+      - GOOGLE_OAUTH_CLIENT_SECRET=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
+
+      # Storage
+      - USE_GCS=False
+
+      # Email
+      - EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+    networks:
+      - progestock-network
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/health/\")'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Service (Vite/React)
+  frontend:
+    build:
+      context: ../ProGestock_frontend/progestock-frontend
+      dockerfile: Dockerfile
+    container_name: progestock-frontend-dev
+    ports:
+      - "5173:5173"
+    volumes:
+      # Mount source code for hot reloading
+      - ../ProGestock_frontend/progestock-frontend:/app
+      # Prevent node_modules from being overwritten by host
+      - /app/node_modules
+    environment:
+      # Point to backend via host machine (browser makes the requests)
+      - VITE_API_BASE_URL=http://localhost:8000
+      - VITE_GOOGLE_CLIENT_ID=5814920372-8dot8md5ro5oaet9d6jv1co6fbr7g4ru.apps.googleusercontent.com
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - progestock-network
+    stdin_open: true
+    tty: true
+
+networks:
+  progestock-network:
+    driver: bridge

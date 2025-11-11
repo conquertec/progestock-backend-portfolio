@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+.eggs/
+*.egg
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+README.md
+CLAUDE.md
+*.md
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+test-reports/
+test-results/
+screenshots/
+videos/
+*.test.log
+
+# Node (if you have frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Misc
+*.bak
+*.tmp
+debug_script.py

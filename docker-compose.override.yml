@@ -1,0 +1,39 @@
+# docker-compose.override.yml
+# This file is automatically used by docker-compose in development
+# It overrides settings from docker-compose.yml for local development
+
+services:
+  web:
+    # Enable hot-reloading by mounting the current directory
+    volumes:
+      - .:/app
+      - /app/venv  # Exclude venv from volume mount
+    # Override to use Django development server with auto-reload
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DEBUG=False
+    # Enable interactive debugging
+    stdin_open: true
+    tty: true
+
+  celery_worker:
+    # Enable hot-reloading for Celery worker
+    volumes:
+      - .:/app
+      - /app/venv
+    # Use watchdog for auto-reload on code changes
+    command: celery -A progestock_backend worker --loglevel=info --pool=solo
+    stdin_open: true
+    tty: true
+
+  # Optional: Add a database admin tool for development
+  # Uncomment to use Adminer (lightweight DB management UI)
+  # adminer:
+  #   image: adminer:latest
+  #   container_name: progestock_adminer
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - progestock_network
+  #   depends_on:
+  #     - db

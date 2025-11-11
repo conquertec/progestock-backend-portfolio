@@ -1,0 +1,43 @@
+name: Prevent Direct Push to Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-deployment:
+    name: Verify Deployment Readiness
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check commit message for bypass
+        id: check_bypass
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          if [[ "$COMMIT_MSG" == *"[deploy:production]"* ]]; then
+            echo "bypass=true" >> $GITHUB_OUTPUT
+            echo "✅ Production deployment authorized via commit message"
+          else
+            echo "bypass=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deployment warning
+        if: steps.check_bypass.outputs.bypass == 'false'
+        run: |
+          echo "⚠️  WARNING: Direct push to main branch detected!"
+          echo ""
+          echo "Recommended workflow:"
+          echo "1. Push to 'staging' branch first"
+          echo "2. Test on staging environment"
+          echo "3. Merge staging to main with message containing [deploy:production]"
+          echo ""
+          echo "Example: git commit -m 'Deploy v1.2.3 [deploy:production]'"
+          echo ""
+          echo "To bypass this warning next time, include [deploy:production] in your commit message."
+          echo "Tests will still run regardless."

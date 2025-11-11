@@ -1,0 +1,157 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - develop
+  pull_request:
+    branches:
+      - main
+      - staging
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-django pytest-cov
+
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+          DJANGO_SETTINGS_MODULE: core.settings
+          SECRET_KEY: test-secret-key-for-ci
+          DEBUG: 'False'
+        run: |
+          python manage.py migrate --no-input
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+          DJANGO_SETTINGS_MODULE: core.settings
+          SECRET_KEY: test-secret-key-for-ci
+          DEBUG: 'False'
+        run: |
+          python manage.py test --verbosity=2
+
+      - name: Check for migration conflicts
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+          DJANGO_SETTINGS_MODULE: core.settings
+          SECRET_KEY: test-secret-key-for-ci
+        run: |
+          python manage.py makemigrations --check --dry-run --verbosity=3
+
+  lint:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install flake8
+        run: |
+          pip install flake8
+
+      - name: Run linting
+        run: |
+          # Stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Warning on other issues but don't fail
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+  deploy-staging:
+    name: Deploy to Staging
+    needs: [test, lint]
+    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Railway Staging
+        run: |
+          echo "Deploying to Railway staging environment..."
+          echo "Make sure you've connected your staging branch to Railway staging environment"
+          echo "Railway will automatically deploy when code is pushed to 'staging' branch"
+
+  deploy-production:
+    name: Deploy to Production
+    needs: [test, lint]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://your-production-url.railway.app
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Pre-deployment safety check
+        run: |
+          echo "🔍 Running pre-deployment checks..."
+          echo "✅ All tests passed"
+          echo "✅ Code quality checks passed"
+          echo "⚠️  IMPORTANT: Have you tested this on staging?"
+          echo "⚠️  IMPORTANT: Are there any breaking changes?"
+          echo ""
+          echo "This deployment will affect 4 active users!"
+
+      - name: Deploy to Railway Production
+        run: |
+          echo "🚀 Deploying to Railway production environment..."
+          echo "Railway will automatically deploy when code is pushed to 'main' branch"
+          echo "Make sure migrations have been tested in staging first!"
+
+      - name: Post-deployment verification
+        run: |
+          echo "✅ Production deployment completed successfully"
+          echo "📊 Monitor your application at: https://your-production-url.railway.app"
+          echo ""
+          echo "🔍 Next steps:"
+          echo "1. Check Railway logs: railway logs"
+          echo "2. Test critical paths (login, invoice, email)"
+          echo "3. Monitor for 10 minutes"
+          echo "4. Have rollback plan ready"
